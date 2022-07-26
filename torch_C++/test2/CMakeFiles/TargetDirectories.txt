@@ -1,0 +1,3 @@
+/data/guiwei/torch_C++/test2/CMakeFiles/rebuild_cache.dir
+/data/guiwei/torch_C++/test2/CMakeFiles/edit_cache.dir
+/data/guiwei/torch_C++/test2/CMakeFiles/dcgan.dir
