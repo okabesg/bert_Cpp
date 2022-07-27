@@ -2,6 +2,10 @@
 
 ##### wish me luck
 
+## requirement:
+
+安装python，torch包
+
 ### bashrc 设置：
 
 ```bash
