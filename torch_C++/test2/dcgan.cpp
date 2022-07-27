@@ -25,8 +25,12 @@ struct Net2 : troch::nn::Module {
 };
 
 int main(){
-    torch::Tensor tensor = torch::eye(3);
-    std::cout << tensor << std::endl;
+    // torch::Tensor tensor = torch::eye(3);
+    // std::cout << tensor << std::endl;
+    Net net(4, 5);
+    for (const auto& p : net.parameters()){
+        std::cout << p << std::endl;
+    }
 
     return 0;
 }
