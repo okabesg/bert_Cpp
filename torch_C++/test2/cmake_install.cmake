@@ -1,4 +1,4 @@
-# Install script for directory: /data/guiwei/torch_C++/test2
+# Install script for directory: /data/guiwei/bert_Cpp/torch_C++/test2
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/data/guiwei/torch_C++/test2/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/data/guiwei/bert_Cpp/torch_C++/test2/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

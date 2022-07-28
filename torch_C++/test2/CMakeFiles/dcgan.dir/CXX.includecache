@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/data/guiwei/torch_C++/test2/dcgan.cpp
+/data/guiwei/bert_Cpp/torch_C++/test2/dcgan.cpp
 iostream
 -
 torch/torch.h
