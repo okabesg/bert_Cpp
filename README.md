@@ -11,3 +11,7 @@
 ```bash
 alias cmake_torch='cmake -DCMAKE_PREFIX_PATH=`python -c "import torch;print(torch.utils.cmake_prefix_path)"`'
 ```
+
+## include path:
+
+> `<installation>`/torch/include/torch/csrc/api/include
