@@ -5,13 +5,23 @@ using namespace torch;
 
 struct DCGANGeneratorImpl : nn::Module{
     DCGANGeneratorImpl(int kNoizeSize) :
-        conv1(nn::ConvTranspose2dOptions(kNoizeSize, 256, 4).bias(false)),
+        conv1(nn::ConvTranspose2dOptions(kNoizeSize, 256, 4)
+            .bias(false)),
         batch_norm1(256),
-        conv2(nn::ConvTranspose2dOptions(256, 128, 3).stride(2).padding(1).bias(false)),
+        conv2(nn::ConvTranspose2dOptions(256, 128, 3)
+            .stride(2)
+            .padding(1)
+            .bias(false)),
         batch_norm2(128),
-        conv3(nn::ConvTranspose2dOptions(128, 64, 4).stride(2).padding(1).bias(false)),
+        conv3(nn::ConvTranspose2dOptions(128, 64, 4)
+            .stride(2)
+            .padding(1)
+            .bias(false)),
         batch_norm3(64),
-        conv4(nn::ConvTranspose2dOptions(64, 1, 4).stride(2).padding(1).bias(false))
+        conv4(nn::ConvTranspose2dOptions(64, 1, 4)
+            .stride(2)
+            .padding(1)
+            .bias(false))
         {
             register_module("conv1", conv1);
             register_module("conv2", conv2);
@@ -35,34 +45,33 @@ struct DCGANGeneratorImpl : nn::Module{
 };
 TORCH_MODULE(DCGANGenerator);
 
-nn::Sequential discriminator(
-    nn::Conv2d(
-        nn::Conv2dOptions(1, 64, 4).stride(2).padding(1).bias(false)),
-    nn::LeakyReLU(nn::LeakyReLUOptions().negative_slope(0.2)),
-
-    nn::Conv2d(
-        nn::Conv2dOptions(64, 128, 4).stride(2).padding(1).bias(false)),
-    nn::BatchNorm2d(128),
-    nn::LeakyReLU(nn::LeakyReLUOptions().negative_slope(0.2)),
-
-    nn::Conv2d(
-        nn::Conv2dOptions(128, 256, 4).stride(2).padding(1).bias(false)),
-    nn::BatchNorm2d(128),
-    nn::LeakyReLU(nn::LeakyReLUOptions().negative_slope(0.2)),
-
-    nn::Conv2d(
-        nn::Conv2dOptions(256, 1, 3).stride(1).padding(0).bias(false)),
-    nn::Sigmoid()
-);
-
 int main(){
+    nn::Sequential discriminator(
+        nn::Conv2d(
+            nn::Conv2dOptions(1, 64, 4).stride(2).padding(1).bias(false)),
+        nn::LeakyReLU(nn::LeakyReLUOptions().negative_slope(0.2)),
+
+        nn::Conv2d(
+            nn::Conv2dOptions(64, 128, 4).stride(2).padding(1).bias(false)),
+        nn::BatchNorm2d(128),
+        nn::LeakyReLU(nn::LeakyReLUOptions().negative_slope(0.2)),
+
+        nn::Conv2d(
+            nn::Conv2dOptions(128, 256, 4).stride(2).padding(1).bias(false)),
+        nn::BatchNorm2d(256),
+        nn::LeakyReLU(nn::LeakyReLUOptions().negative_slope(0.2)),
+
+        nn::Conv2d(
+            nn::Conv2dOptions(256, 1, 3).stride(1).padding(0).bias(false)),
+        nn::Sigmoid());
+
     int kNoiseSize = 100;
     DCGANGenerator generator(kNoiseSize);
     auto dataset = data::datasets::MNIST("./mnist")
         .map(data::transforms::Normalize<>(0.5, 0.5))
         .map(data::transforms::Stack<>());
 
-    int kBatchSize = 32;
+    int kBatchSize = 64;
     auto data_loader = data::make_data_loader(std::move(dataset),
         data::DataLoaderOptions().batch_size(kBatchSize).workers(2));
 
@@ -83,7 +92,7 @@ int main(){
 
     const int64_t batches_per_epoch =
         std::ceil(dataset.size().value() / static_cast<double>(kBatchSize));
-    int kNumberOfEpochs = 10;
+    int kNumberOfEpochs = 30;
     for(int64_t epoch = 1; epoch <= kNumberOfEpochs; epoch++){
         int64_t batch_index = 0;
         for(torch::data::Example<>& batch : *data_loader){
@@ -110,12 +119,12 @@ int main(){
             torch::Tensor g_loss = binary_cross_entropy(fake_output, fake_labels);
             g_loss.backward();
             generator_optimizer.step();
+            ++batch_index,
 
             std::printf(
-                "\r[%2ld/%2ld][%3ld/%3ld] D_loss: %.4f | G_loss: %.4f",
+                "\r[%2ld/%2ld][%3ld/%3ld] D_loss: %.4f | G_loss: %.4f\n",
                 epoch,
                 kNumberOfEpochs,
-                ++batch_index,
                 batch_index,
                 batches_per_epoch,
                 d_loss.item<float>(),

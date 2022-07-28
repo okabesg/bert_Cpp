@@ -402,6 +402,18 @@ dcgan_BINARY_DIR:STATIC=/data/guiwei/bert_Cpp/dcgan
 //Value Computed by CMake
 dcgan_SOURCE_DIR:STATIC=/data/guiwei/bert_Cpp/dcgan
 
+//Value Computed by CMake
+dcgan_offical_BINARY_DIR:STATIC=/data/guiwei/bert_Cpp/dcgan
+
+//Value Computed by CMake
+dcgan_offical_SOURCE_DIR:STATIC=/data/guiwei/bert_Cpp/dcgan
+
+//Value Computed by CMake
+dcgan_official_BINARY_DIR:STATIC=/data/guiwei/bert_Cpp/dcgan
+
+//Value Computed by CMake
+dcgan_official_SOURCE_DIR:STATIC=/data/guiwei/bert_Cpp/dcgan
+
 
 ########################
 # INTERNAL cache entries
