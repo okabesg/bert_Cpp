@@ -67,13 +67,13 @@ int main(){
 
     int kNoiseSize = 100;
     DCGANGenerator generator(kNoiseSize);
-    auto dataset = data::datasets::MNIST("./mnist")
-        .map(data::transforms::Normalize<>(0.5, 0.5))
-        .map(data::transforms::Stack<>());
+    auto dataset = torch::data::datasets::MNIST("./mnist")
+        .map(torch::data::transforms::Normalize<>(0.5, 0.5))
+        .map(torch::data::transforms::Stack<>());
 
     int kBatchSize = 64;
-    auto data_loader = data::make_data_loader(std::move(dataset),
-        data::DataLoaderOptions().batch_size(kBatchSize).workers(2));
+    auto data_loader = torch::data::make_data_loader(std::move(dataset),
+        torch::data::DataLoaderOptions().batch_size(kBatchSize).workers(2));
 
     /*
     for (torch::data::Example<>& batch : *data_loader){
@@ -86,13 +86,13 @@ int main(){
     */
 
     torch::optim::Adam generator_optimizer(
-        generator->parameters(), torch::optim::AdamOptions(2e-4).betas({0.9, 0.5}));
+        generator->parameters(), torch::optim::AdamOptions(2e-4).betas({0.5, 0.5}));
     torch::optim::Adam discriminator_optimizer(
-        discriminator->parameters(), torch::optim::AdamOptions(5e-4).betas({0.9, 0.5}));
+        discriminator->parameters(), torch::optim::AdamOptions(2e-4).betas({0.5, 0.5}));
 
     const int64_t batches_per_epoch =
         std::ceil(dataset.size().value() / static_cast<double>(kBatchSize));
-    int kNumberOfEpochs = 30;
+    const int64_t kNumberOfEpochs = 30;
     for(int64_t epoch = 1; epoch <= kNumberOfEpochs; epoch++){
         int64_t batch_index = 0;
         for(torch::data::Example<>& batch : *data_loader){

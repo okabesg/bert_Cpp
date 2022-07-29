@@ -15,3 +15,7 @@ alias cmake_torch='cmake -DCMAKE_PREFIX_PATH=`python -c "import torch;print(torc
 ## include path:
 
 > `<installation>`/torch/include/torch/csrc/api/include
+
+## 使用说明
+
+> [USING THE PYTORCH C++ FRONTEND](https://pytorch.org/tutorials/advanced/cpp_frontend.html)
